@@ -1,0 +1,44 @@
+﻿@model PruebaBACWebApp.Models.Pregunta
+
+@{
+    ViewData["Title"] = "HacerPregunta";
+}
+
+<br />
+<br />
+<h4 class="text-center">Haz tu pregunta</h4>
+<div class="card">
+    <div class="card-body">
+        <div class="mx-auto">
+            <div class="row">
+                <div class="col-md-10 mx-auto">
+                    <form asp-action="GuardarPregunta">
+                        <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+                        <input asp-for="idPregunta" class="form-control" value="0" hidden readonly />
+                        <input asp-for="usuario" class="form-control" value="@ViewData["usuario"]" hidden readonly /> 
+                        <h6 class="card-subtitle mt-3 mb-2">
+                            @@@ViewData["usuario"]:
+                        </h6>
+                        <div class="form-group">
+                            <textarea asp-for="pregunta1" class="form-control" placeholder="Escribe tu pregunta aquí"></textarea>
+                            <span asp-validation-for="pregunta1" class="text-danger"></span>
+                        </div>
+                        <div class="form-group">
+                            <input type="submit" value="Publicar pregunta" class="btn btn-primary btn-block" />
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<div>
+    <br />
+    <a asp-action="Index">Regresar al inicio</a>
+</div>
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}

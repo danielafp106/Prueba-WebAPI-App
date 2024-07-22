@@ -1,0 +1,108 @@
+﻿@model IEnumerable<PruebaBACWebApp.Models.Pregunta>
+
+@{
+    ViewData["Title"] = "Index";
+}
+
+<br />
+<br />
+<h5 class="text-center">Preguntas y respuestas</h5>
+<div class="mx-auto">
+    <div class="row">
+        <div class="col-md-4 mx-auto">
+            <hr />
+            @if (ViewBag.Error != null && ViewBag.Error != "")
+            {
+                <div class="alert alert-danger" role="alert">
+                    @ViewBag.Error
+                </div>
+            }
+
+            @if (ViewBag.Exito != null && ViewBag.Exito != "")
+            {
+                <div class="alert alert-success" role="alert">
+                    @ViewBag.Exito
+                </div>
+            }
+                <div class="form-group">
+                    <input type="button" value="Hacer una pregunta" class="btn btn-info btn-block" onclick="location.href='@Url.Action("HacerPregunta", "Preguntas")'">
+                </div>
+        </div>
+    </div>
+</div>
+@foreach (var item in Model)
+{
+    <div class="card">
+        <div class="card-body">
+            <div class="d-flex justify-content-between">
+                <h6 class="card-title">P#@Html.DisplayFor(modelItem => item.idPregunta)</h6>
+                @if (item.estado.ToString() == "C")
+                {
+                    <div>
+                        <span class="badge badge-warning">Pregunta Cerrada</span>
+                    </div>                 
+                }
+                else
+                {
+                    <div>
+                        <span class="badge badge-success">Pregunta Abierta</span>
+                    </div>
+                }
+            </div>
+            <div class="d-flex justify-content-between">
+                <h6 class="card-subtitle mb-0" style="margin-bottom:-10px;">
+                    @@@Html.DisplayFor(modelItem => item.usuario) 
+                </h6>
+                <p style="font-size:small" class="text-end">
+                    @item.fCreacion.Value.ToString("ddd dd/MM/yyyy") <br> @item.fCreacion.Value.ToString("HH:mm tt")
+                    </p>
+            </div>
+
+            <h5 class="card-text" style="margin-top:-15px;">@Html.DisplayFor(modelItem => item.pregunta1)</h5>
+            @if (item.estado.ToString() != "C")
+            {
+                <a class="card-link d-flex justify-content-end" style="margin-top:5px;cursor:pointer;color:#0D6EFD;" onclick="MostrarRespuesta('respuesta-@item.idPregunta',true);">Agregar comentario</a>
+                if (item.usuario == @ViewData["usuario"].ToString())
+                {
+                    <a class="card-link d-flex justify-content-end" style="margin-top:5px;cursor:pointer; color:#0D6EFD;" href="@Url.Action("CerrarPregunta", "Preguntas", new { idPregunta = item.idPregunta })">Cerrar Pregunta</a>
+
+                }
+            }
+        </div>
+
+        @if (item.respuesta.Count != 0)
+        {
+            @foreach (var r in item.respuesta)
+            {
+                <div class="card-footer d-flex justify-content-between">
+                    <div><h6>@@@r.usuario:</h6> @r.respuesta1</div>
+                    <p style="font-size:small" class="text-end">
+                        @r.fCreacion.Value.ToString("ddd dd/MM/yyyy") <br> @r.fCreacion.Value.ToString("HH:mm tt")
+                    </p>
+                </div>
+                              
+            }
+
+        }
+        else
+        {
+            <div class="card-footer d-flex justify-content-between">
+                <h6>Está pregunta no tiene respuestas.</h6>             
+            </div>
+        }
+        <div id="respuesta-@item.idPregunta" class="visually-hidden">
+            <partial name="../Respuestas/IngresarRespuesta.cshtml" model="item.registro" />
+        </div>
+        
+    </div>    
+    <br />
+}
+
+@section Scripts {
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+}
+
+
+              

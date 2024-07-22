@@ -1,0 +1,58 @@
+﻿@model PruebaBACWebApp.Models.Usuario
+
+@{
+    ViewData["Title"] = "Iniciar Sesión";
+}
+<br />
+<br />
+<div class="mx-auto">
+    <h5 class="text-center">Ingrese sus credenciales</h5>
+    <div class="row">
+        <div class="col-md-4 mx-auto">
+            <hr />
+            @if (ViewBag.Error != null && ViewBag.Error != "")
+            {
+                <div class="alert alert-danger" role="alert">
+                    @ViewBag.Error
+                </div>
+            }
+
+            @if (ViewBag.Exito != null && ViewBag.Exito != "")
+            {
+                <div class="alert alert-success" role="alert">
+                    @ViewBag.Exito
+                </div>
+            }
+            
+        <form asp-action="ComprobarCredenciales">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <div class="form-group">
+                <label asp-for="usuario1" class="control-label"></label>
+                <input asp-for="usuario1" class="form-control" />
+                <span asp-validation-for="usuario1" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="contrasena" class="control-label"></label>
+                <input asp-for="contrasena" class="form-control" />
+                <span asp-validation-for="contrasena" class="text-danger"></span>
+            </div>
+            <br />
+            <div class="form-group">
+                <input type="submit" value="Iniciar Sesión" class="btn btn-success btn-block" />
+            </div>
+            <div class="form-group">
+                    <input type="button" value="Registarse" class="btn btn-info btn-block" onclick="location.href='@Url.Action("Registrarse", "Home")'">
+                </div>
+        </form>
+    </div>
+</div>
+
+<div>
+    
+</div>
+</div>
+
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}
