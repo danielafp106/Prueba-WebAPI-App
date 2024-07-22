@@ -60,7 +60,7 @@ namespace PruebaBACWebApp.Controllers
                 }
                 else
                 {
-                    ViewBag.Error = "Credenciales Incorrectas, intente de nuevo.";
+                    ViewBag.Error = "Ese usuario ya existe, inicie sesión o intente de nuevo.";
                 }
             }
             else
